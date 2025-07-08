@@ -1,0 +1,44 @@
+kube-prometheus-stack:
+  grafana:
+    enabled: true
+    adminPassword: admin
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      hosts:
+        - grafana.192-168-86-10.sslip.io
+      tls:
+        - hosts:
+            - grafana.192-168-86-10.sslip.io
+          secretName: grafana-tls
+
+  prometheus:
+    prometheusSpec:
+      serviceMonitorSelectorNilUsesHelmValues: false
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      hosts:
+        - prometheus.192-168-86-10.sslip.io
+      tls:
+        - hosts:
+            - prometheus.192-168-86-10.sslip.io
+          secretName: prometheus-tls
+
+  alertmanager:
+    enabled: true
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      hosts:
+        - alertmanager.192-168-86-10.sslip.io
+      tls:
+        - hosts:
+            - alertmanager.192-168-86-10.sslip.io
+          secretName: alertmanager-tls

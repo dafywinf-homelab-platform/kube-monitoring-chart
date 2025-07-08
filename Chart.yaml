@@ -1,0 +1,10 @@
+apiVersion: v2
+name: kube-monitoring
+description: A Helm chart to deploy Prometheus, Thanos, and Grafana Operator
+type: application
+version: 0.0.0-SNAPSHOT
+
+dependencies:
+  - name: kube-prometheus-stack
+    version: "^75.0.0"
+    repository: "https://prometheus-community.github.io/helm-charts"

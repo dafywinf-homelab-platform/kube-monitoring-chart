@@ -1,0 +1,26 @@
+# 🛡️ Ignore TLS certs and keys
+certs/*.crt
+certs/*.key
+
+# 📦 Helm build output
+charts/
+*.tgz
+Chart.lock
+
+# 🧪 Local override values
+values.local.yaml
+
+# 💻 IntelliJ IDEA files
+.idea/
+*.iml
+
+# 🍎 macOS metadata
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# 💾 Misc temp/editor files
+*.swp
+*.swo
+*.tmp
+*~
