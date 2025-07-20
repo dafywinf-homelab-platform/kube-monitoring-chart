@@ -3,6 +3,7 @@ name: kube-monitoring
 description: A Helm chart to deploy Prometheus, Thanos, and Grafana Operator
 type: application
 version: 0.0.0-SNAPSHOT
+appVersion: "1.0"
 
 dependencies:
   - name: kube-prometheus-stack

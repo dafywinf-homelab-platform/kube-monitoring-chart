@@ -1,7 +1,7 @@
-
 # Kube Monitoring Stack
 
-This Helm chart deploys the [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack),
+This Helm chart deploys
+the [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack),
 which includes:
 
 - Prometheus Operator
@@ -71,6 +71,8 @@ kubectl get all -n kube-monitoring
 helm uninstall kube-monitoring --namespace kube-monitoring
 ```
 
+```bash
+
 ## Accessing Grafana
 
 ```bash
@@ -88,4 +90,5 @@ Login: `admin` / `admin` (default)
 * You can add custom dashboards, alerts, or exporters using ServiceMonitor or PrometheusRule resources.
 
 ## Next Steps
+
 * Integrate with the Grafana Operator if you prefer declarative dashboard management

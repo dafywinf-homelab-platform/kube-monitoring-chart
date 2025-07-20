@@ -13,6 +13,41 @@ kube-prometheus-stack:
         - hosts:
             - grafana.192-168-86-10.sslip.io
           secretName: grafana-tls
+    plugins:
+      - vertamedia-clickhouse-datasource
+      - grafana-clickhouse-datasource
+    additionalDataSources:
+      - name: Clickhouse
+        type: grafana-clickhouse-datasource
+        access: proxy
+        isDefault: false
+        editable: true
+        url: ""  # Required field, but unused with JSON config
+        jsonData:
+          namespace: clickhouse
+          host: clickhouse-clickhouse.clickhouse.svc.cluster.local # Use the service name and namespace
+          defaultDatabase: default
+          port: 9000
+          useCompression: true
+          username: default
+          timeInterval: 5s
+          tlsSkipVerify: true
+        secureJsonData:
+          password: default
+      - name: Vertamedia ClickHouse
+        type: vertamedia-clickhouse-datasource
+        editable: true
+        access: proxy
+        isDefault: false
+        url: "http://clickhouse-clickhouse.clickhouse.svc.cluster.local:8123"
+        jsonData:
+          namespace: clickhouse
+          defaultDatabase: default
+          username: default
+          timeInterval: 5s
+          tlsSkipVerify: true
+        secureJsonData:
+          password: default
 
   prometheus:
     prometheusSpec:
@@ -42,3 +77,4 @@ kube-prometheus-stack:
         - hosts:
             - alertmanager.192-168-86-10.sslip.io
           secretName: alertmanager-tls
+
