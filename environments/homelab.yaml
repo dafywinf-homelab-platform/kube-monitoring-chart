@@ -1,0 +1,24 @@
+kube-monitoring-stack:
+  grafana:
+    ingress:
+      hosts:
+        - grafana.192-168-86-10.sslip.io
+      tls:
+        - hosts:
+            - grafana.192-168-86-10.sslip.io
+
+  prometheus:
+    ingress:
+      hosts:
+        - prometheus.192-168-86-10.sslip.io
+      tls:
+        - hosts:
+            - prometheus.192-168-86-10.sslip.io
+
+  alertmanager:
+    ingress:
+      hosts:
+        - alertmanager.192-168-86-10.sslip.io
+      tls:
+        - hosts:
+            - alertmanager.192-168-86-10.sslip.io

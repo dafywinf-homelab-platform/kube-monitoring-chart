@@ -59,7 +59,8 @@ helm dependency build
 helm upgrade --install kube-monitoring ./ \
   --namespace kube-monitoring \
   --create-namespace \
-  --values values.yaml
+  --values values.yaml \
+  --values environment/homelab.yaml 
 
 # Confirm deployment successful
 kubectl get all -n kube-monitoring

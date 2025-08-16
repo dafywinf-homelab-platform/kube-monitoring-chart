@@ -1,4 +1,4 @@
-kube-prometheus-stack:
+kube-monitoring-stack:
   grafana:
     enabled: true
     adminPassword: admin
@@ -7,11 +7,9 @@ kube-prometheus-stack:
       ingressClassName: traefik
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
-      hosts:
-        - grafana.192-168-86-10.sslip.io
+      hosts: []
       tls:
-        - hosts:
-            - grafana.192-168-86-10.sslip.io
+        - hosts: []
           secretName: grafana-tls
     plugins:
       - vertamedia-clickhouse-datasource
@@ -58,10 +56,10 @@ kube-prometheus-stack:
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
       hosts:
-        - prometheus.192-168-86-10.sslip.io
+        - []
       tls:
         - hosts:
-            - prometheus.192-168-86-10.sslip.io
+            - []
           secretName: prometheus-tls
 
   alertmanager:
@@ -72,9 +70,9 @@ kube-prometheus-stack:
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
       hosts:
-        - alertmanager.192-168-86-10.sslip.io
+        - []
       tls:
         - hosts:
-            - alertmanager.192-168-86-10.sslip.io
+            - []
           secretName: alertmanager-tls
 
