@@ -10,7 +10,6 @@ kube-monitoring-stack:
       hosts: []
       tls:
         - hosts: []
-          secretName: grafana-tls
 
   prometheus:
     prometheusSpec:
@@ -25,7 +24,6 @@ kube-monitoring-stack:
       tls:
         - hosts:
             - []
-          secretName: prometheus-tls
 
   alertmanager:
     enabled: true
@@ -39,5 +37,4 @@ kube-monitoring-stack:
       tls:
         - hosts:
             - []
-          secretName: alertmanager-tls
 
