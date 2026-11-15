@@ -1,7 +1,12 @@
 kube-monitoring-stack:
   grafana:
     enabled: true
-    adminPassword: admin
+    # Admin login comes from a Secret created outside Git by k3s-cluster-bootstrap's platform_secrets role
+    # (password in its git-ignored secrets.yml). Never put the password in this public repo.
+    admin:
+      existingSecret: grafana-admin
+      userKey: admin-user
+      passwordKey: admin-password
     ingress:
       enabled: true
       ingressClassName: traefik
