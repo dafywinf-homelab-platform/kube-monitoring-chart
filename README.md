@@ -11,68 +11,27 @@ which includes:
 - node-exporter
 - kube-state-metrics
 
-## Installation
+## Deployment (Argo CD)
 
-Add the repo (if not already done):
+This chart is deployed by **Argo CD**, not by hand. The Application lives in
+[homelab-gitops](https://github.com/dafywinf-homelab-platform/homelab-gitops) under
+`platform -> monitoring -> kube-monitoring`, tracking `main` of this repo with release name `kube-monitoring`,
+namespace `kube-monitoring` and value files `values.yaml` + `environments/homelab.yaml`.
 
-```bash
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo update
-helm search repo prometheus-community/kube-prometheus-stack
-````
+**Merging to `main` deploys.** Don't run `helm upgrade` against the cluster: Argo CD would revert it.
 
-Creating the certificates:
+* `kube-prometheus-stack` is pinned to an exact version in `Chart.yaml`, with `Chart.lock` committed, so Argo CD renders
+  exactly what was reviewed. Bump both together (`helm dependency update`).
+* HTTPS is terminated by Traefik with its built-in default certificate. The chart ships no TLS secrets: the old
+  self-signed certs were gitignored, so Argo CD could never have rendered them.
 
-```bash
-# Prometheus
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-  -subj "/CN=prometheus.192-168-86-10.sslip.io" \
-  -keyout certs/prometheus.key \
-  -out certs/prometheus.crt
-
-# Grafana
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-  -subj "/CN=grafana.192-168-86-10.sslip.io" \
-  -keyout certs/grafana.key \
-  -out certs/grafana.crt
-
-# Alertmanager
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-  -subj "/CN=alertmanager.192-168-86-10.sslip.io" \
-  -keyout certs/alertmanager.key \
-  -out certs/alertmanager.crt
-```
-
-Configuring the chart:
-
-Run the following command to view values that can be customised:
-
-```bash
-helm show values prometheus-community/kube-prometheus-stack
-```
-
-## Deploying the Stack
+To preview changes locally:
 
 ```bash
 helm dependency build
-
-helm upgrade --install kube-monitoring ./ \
-  --namespace kube-monitoring \
-  --create-namespace \
-  --values values.yaml \
-  --values environment/homelab.yaml 
-
-# Confirm deployment successful
-kubectl get all -n kube-monitoring
+helm template kube-monitoring . -n kube-monitoring -f values.yaml -f environments/homelab.yaml
+helm show values prometheus-community/kube-prometheus-stack   # all customisable values
 ```
-
-## (Optional) Uninstall Deployment
-
-```bash
-helm uninstall kube-monitoring --namespace kube-monitoring
-```
-
-```bash
 
 ## Accessing Grafana
 
