@@ -1,8 +1,9 @@
 kube-monitoring-stack:
   grafana:
     enabled: true
-    # Admin login comes from a Secret created outside Git by k3s-cluster-bootstrap's platform_secrets role
-    # (password in its git-ignored secrets.yml). Never put the password in this public repo.
+    # Admin login comes from Secret grafana-admin, created by the sealed-secrets controller from
+    # homelab-gitops apps/platform/monitoring/kube-monitoring-extras/grafana-admin.sealedsecret.yaml
+    # (`make seal-grafana-admin` there). Never put the password in this public repo.
     admin:
       existingSecret: grafana-admin
       userKey: admin-user
