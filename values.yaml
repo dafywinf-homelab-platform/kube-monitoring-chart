@@ -17,9 +17,31 @@ kube-monitoring-stack:
       tls:
         - hosts: []
 
+  # On k3s the kubelet, API server, scheduler, controller manager and etcd run in one process, and every metrics
+  # endpoint on a master serves all of their metrics. The kubelet job therefore collected a second copy of the
+  # control-plane metrics (about 300k of 512k series), bypassing the bucket drops the chart applies to the apiserver
+  # job. Keep only the node-level metrics here; the apiserver job still has the control-plane ones.
+  kubelet:
+    serviceMonitor:
+      metricRelabelings:
+        # Chart default: reduce bucket cardinality of kubelet storage operations
+        - action: drop
+          sourceLabels: [__name__, le]
+          regex: (csi_operations|storage_operation_duration)_seconds_bucket;(0.25|2.5|15|25|120|600)(\.0)?
+        - action: drop
+          sourceLabels: [__name__]
+          regex: (apiserver|etcd|workqueue|scheduler|apiextensions|aggregator|authentication|authorization)_.+
+
   prometheus:
     prometheusSpec:
       serviceMonitorSelectorNilUsesHelmValues: false
+      # Most of Prometheus' memory is its active series (~0.5 GB after the kubelet drops above). A request lets the
+      # scheduler see that; the limit stops it squeezing a 4 GB worker
+      resources:
+        requests:
+          memory: 768Mi
+        limits:
+          memory: 1536Mi
     ingress:
       enabled: true
       ingressClassName: traefik
